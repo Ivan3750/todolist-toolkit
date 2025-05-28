@@ -1,19 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import { deleteTask } from "../redux/actions";
+import { deleteTask } from "../redux/todoSlice";
 
 const ToDoList = () => {
   const tasks = useSelector((state) => state.todolist.tasks);
-  const filter = useSelector((state) => state.todolist.filter);
   console.log(tasks);
   const dispatch = useDispatch();
 
-  const filteredTask = tasks.filter((task)=> task.name.toLowerCase() !== filter.toLowerCase())
   return (
     <>
-    
-    
-
-      {filteredTask.map((task) => {
+      {tasks.map((task) => {
         return (
           <div key={task.id}>
             <p>{task.name}</p>
