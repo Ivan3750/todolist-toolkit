@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { deleteTask } from "../redux/todoSlice";
+import { deleteTask, changeDone } from "../redux/todoSlice";
 
 const ToDoList = () => {
   const tasks = useSelector((state) => state.todolist.tasks);
@@ -12,7 +12,7 @@ const ToDoList = () => {
         return (
           <div key={task.id}>
             <p>{task.name}</p>
-            <input type="checkbox" checked={task.isDone} />
+            <input type="checkbox" checked={task.isDone} onChange={()=> {dispatch(changeDone(task.id))}} />
             <button onClick={() => dispatch(deleteTask(task.id))}>
               Видалити
             </button>
