@@ -19,18 +19,14 @@ const todoSlice = createSlice({
     filterTasks(state, action) {
       state.filter = action.payload.name;
     },
-    changeDone(state, action) {
+  changeDone(state, action) {
+  state.tasks = state.tasks.map((task) =>
+    task.id === action.payload
+      ? { ...task, isDone: !task.isDone }
+      : task
+  );
+}
 
-      console.log(state.tasks)
-       state.tasks.map((task) =>{
-        return task.id === action.payload
-          ? {
-              ...task,
-              isDone: true,
-            }
-          : task
-      });
-    },
   },
 });
 
