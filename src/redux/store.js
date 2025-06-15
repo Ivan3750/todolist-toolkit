@@ -39,7 +39,7 @@ export const store = configureStore({
   reducer: {
     todolist: persistTodoReducer
   },
-  applyMiddleware(thunk)
+  // applyMiddleware(thunk)
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware({
   //     serializableCheck: {
