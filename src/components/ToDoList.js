@@ -1,22 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTask, changeDone } from "../redux/todoSlice";
-import { getToDosApi } from "../api/getToDo";
 import { useState, useEffect } from "react";
-
+import {fetchTasksThunk }from "../redux/todoSlice"
 const ToDoList = () => {
-  const [toDos, setToDos] = useState([])
-  useEffect(() => {
-    getToDosApi().then(data => { setToDos(data) })
+    const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(fetchTasksThunk())
   }, [])
-  console.log(toDos)
   const tasks = useSelector((state) => state.todolist.tasks);
-  console.log(tasks);
-  const dispatch = useDispatch();
+  console.log(tasks)
 
   return (
     <>
-      {toDos.map((task) => {
+      {tasks[0]?.map((task) => {
         return (
           <div key={task.id}>
             <p>{task.name}</p>

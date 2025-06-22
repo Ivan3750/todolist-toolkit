@@ -1,8 +1,13 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
+import { getToDosApi } from "../api/getToDo";
 
 const initialState = {
-  tasks: [{ id: 1, name: "Test", isDone: true }],
+  tasks: [],
 };
+
+export const fetchTasksThunk = createAsyncThunk("todo/fetchTasks", ()=>
+  getToDosApi()
+)
 
 const todoSlice = createSlice({
   name: "todo",
@@ -25,8 +30,23 @@ const todoSlice = createSlice({
       ? { ...task, isDone: !task.isDone }
       : task
   );
+  
 }
 
+  },
+ extraReducers: (builder) => {
+    builder
+      .addCase(fetchTasksThunk.fulfilled, (state, action) => {
+        state.tasks.push(action.payload);
+        state.loading = false;
+      })
+      .addCase(fetchTasksThunk.pending, (state, action) => {
+/*         state.loading = true; */
+      })
+      .addCase(fetchTasksThunk.rejected, (state, action) => {
+/*         state.loading = false;
+        state.err = action.error.message; */
+      });
   },
 });
 
