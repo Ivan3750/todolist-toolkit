@@ -6,8 +6,11 @@ import Form from './components/Form';
 function App() {
   return (
     <>
-    <ToDoList></ToDoList>
+    <div className='w-[800px] mx-auto my-10 flex flex-col items-center'>
+
     <Form></Form>
+    <ToDoList></ToDoList>
+    </div>
     </>
   );
 }

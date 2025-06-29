@@ -1,12 +1,21 @@
-import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
-import { getToDosApi } from "../api/getToDo";
+import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit"
+import { getToDosApi, deleteToDosApi,addToDosApi } from "../api/fetch"
 
 const initialState = {
   tasks: [],
-};
+  filter: null,
+}
 
-export const fetchTasksThunk = createAsyncThunk("todo/fetchTasks", ()=>
+export const fetchTasksThunk = createAsyncThunk("todo/fetchTasks", () =>
   getToDosApi()
+)
+
+export const deleteTasksThunk = createAsyncThunk("todo/deleteTasks", id =>
+  deleteToDosApi(id)
+)
+
+export const addTasksThunk = createAsyncThunk("todo/addTasks", data =>
+  addToDosApi(data)
 )
 
 const todoSlice = createSlice({
@@ -14,42 +23,35 @@ const todoSlice = createSlice({
   initialState,
   reducers: {
     addTask(state, action) {
-      state.tasks.push({ id: nanoid(), name: action.payload, isDone: false });
-      console.log(state.tasks);
+      state.tasks.push({ id: nanoid(), name: action.payload, isDone: false })
     },
     deleteTask(state, action) {
-      console.log(action);
-      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload)
     },
     filterTasks(state, action) {
-      state.filter = action.payload.name;
+      state.filter = action.payload.name
     },
-  changeDone(state, action) {
-  state.tasks = state.tasks.map((task) =>
-    task.id === action.payload
-      ? { ...task, isDone: !task.isDone }
-      : task
-  );
-  
-}
-
+    changeDone(state, action) {
+      state.tasks = state.tasks.map((task) =>
+        task.id === action.payload
+          ? { ...task, isDone: !task.isDone }
+          : task
+      )
+    },
   },
- extraReducers: (builder) => {
+  extraReducers: (builder) => {
     builder
       .addCase(fetchTasksThunk.fulfilled, (state, action) => {
-        state.tasks.push(action.payload);
-        state.loading = false;
+        state.tasks = action.payload
       })
-      .addCase(fetchTasksThunk.pending, (state, action) => {
-/*         state.loading = true; */
+      .addCase(deleteTasksThunk.fulfilled, (state, action) => {
+        state.tasks = state.tasks.filter(task => task.id !== action.payload.id)
       })
-      .addCase(fetchTasksThunk.rejected, (state, action) => {
-/*         state.loading = false;
-        state.err = action.error.message; */
-      });
+      .addCase(addTasksThunk.fulfilled, (state, action) => {
+        state.tasks.push(action.payload)
+      })
   },
-});
+})
 
-export const { addTask, deleteTask, filterTasks, changeDone } =
-  todoSlice.actions;
-export const todoReducer = todoSlice.reducer;
+export const { addTask, deleteTask, filterTasks, changeDone } = todoSlice.actions
+export const todoReducer = todoSlice.reducer

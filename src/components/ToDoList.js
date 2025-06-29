@@ -1,31 +1,56 @@
-import { useDispatch, useSelector } from "react-redux";
-import { deleteTask, changeDone } from "../redux/todoSlice";
-import { useState, useEffect } from "react";
-import {fetchTasksThunk }from "../redux/todoSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { changeDone } from "../redux/todoSlice"
+import { useEffect } from "react"
+import { fetchTasksThunk, deleteTasksThunk } from "../redux/todoSlice"
+
 const ToDoList = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const tasks = useSelector((state) => state.todolist.tasks)
 
   useEffect(() => {
     dispatch(fetchTasksThunk())
   }, [])
-  const tasks = useSelector((state) => state.todolist.tasks);
-  console.log(tasks)
+
+  const handleDelete = (id) => {
+    dispatch(deleteTasksThunk(id))
+  }
 
   return (
-    <>
-      {tasks[0]?.map((task) => {
-        return (
-          <div key={task.id}>
-            <p>{task.name}</p>
-            <input type="checkbox" checked={task.isDone} onChange={() => { dispatch(changeDone(task.id)) }} />
-            <button onClick={() => dispatch(deleteTask(task.id))}>
-              Видалити
-            </button>
+    <div className="flex flex-col gap-4 mt-6 w-full">
+      {tasks?.map((task) => (
+        <div
+          key={task.id}
+          className={`flex justify-between items-center p-4 rounded-2xl border transition-all  ${
+            task.isDone
+              ? "bg-green-100 border-green-300"
+              : "bg-white border-gray-300"
+          }`}
+        >
+          <div className="flex items-center gap-4 w-full">
+            <input
+              type="checkbox"
+              checked={task.isDone}
+              onChange={() => dispatch(changeDone(task.id))}
+              className="h-5 w-5 accent-green-500"
+            />
+            <p
+              className={`text-lg w-full break-words ${
+                task.isDone ? "line-through text-gray-500" : "text-gray-800"
+              }`}
+            >
+              {task.name}
+            </p>
           </div>
-        );
-      })}
-    </>
-  );
-};
+          <button
+            onClick={() => handleDelete(task.id)}
+            className="ml-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl"
+          >
+            Видалити
+          </button>
+        </div>
+      ))}
+    </div>
+  )
+}
 
-export default ToDoList;
+export default ToDoList
