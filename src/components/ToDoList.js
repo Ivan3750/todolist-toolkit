@@ -2,10 +2,16 @@ import { useDispatch, useSelector } from "react-redux"
 import { changeDone } from "../redux/todoSlice"
 import { useEffect } from "react"
 import { fetchTasksThunk, deleteTasksThunk } from "../redux/todoSlice"
+import Err from "./Err"
+import Loading from "./Loading"
 
 const ToDoList = () => {
   const dispatch = useDispatch()
-  const tasks = useSelector((state) => state.todolist.tasks)
+  const tasks = useSelector((state) => state.todolist.tasks) /* отримуємо всі завдання з store */
+  const err = useSelector((state) => state.todolist.err) /* отримуємо помилку з store */
+  const isLoading = useSelector((state) => state.todolist.isLoading) /* отримуємо завантаження з store */
+  console.log(isLoading)
+  console.error("Err",err)
 
   useEffect(() => {
     dispatch(fetchTasksThunk())
@@ -17,7 +23,7 @@ const ToDoList = () => {
 
   return (
     <div className="flex flex-col gap-4 mt-6 w-full">
-      {tasks?.map((task) => (
+      {!err && !isLoading && tasks?.map((task) => (
         <div
           key={task.id}
           className={`flex justify-between items-center p-4 rounded-2xl border transition-all  ${
@@ -49,6 +55,9 @@ const ToDoList = () => {
           </button>
         </div>
       ))}
+
+      {err && <Err></Err>}
+      {isLoading && <Loading></Loading>}
     </div>
   )
 }
