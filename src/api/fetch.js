@@ -5,3 +5,6 @@ export const deleteToDosApi = (id) => fetch(`https://684ef97bf0c9c9848d29bc38.mo
 
 export const addToDosApi = (data) => fetch(`https://684ef97bf0c9c9848d29bc38.mockapi.io/tasks/`, 
     {method: "POST", body: JSON.stringify(data), headers: { "Content-Type": "application/json"}}).then((res) => res.json()) /* додаємо завдання до серверу  */
+
+export const changeDoneToDosApi = (id, isDone) => fetch(`https://684ef97bf0c9c9848d29bc38.mockapi.io/tasks/${id}`, 
+    {method: "PUT", body: JSON.stringify({isDone}), headers: { "Content-Type": "application/json"}}).then((res) => res.json()) /* додаємо завдання до серверу  */

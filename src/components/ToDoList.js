@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
-import { changeDone } from "../redux/todoSlice"
 import { useEffect } from "react"
-import { fetchTasksThunk, deleteTasksThunk } from "../redux/todoSlice"
+import { fetchTasksThunk, deleteTasksThunk, changeDoneThunk } from "../redux/todoSlice"
 import Err from "./Err"
 import Loading from "./Loading"
 
@@ -10,6 +9,7 @@ const ToDoList = () => {
   const tasks = useSelector((state) => state.todolist.tasks) /* отримуємо всі завдання з store */
   const err = useSelector((state) => state.todolist.err) /* отримуємо помилку з store */
   const isLoading = useSelector((state) => state.todolist.isLoading) /* отримуємо завантаження з store */
+  console.log(tasks)
   console.log(isLoading)
   console.error("Err",err)
 
@@ -36,7 +36,7 @@ const ToDoList = () => {
             <input
               type="checkbox"
               checked={task.isDone}
-              onChange={() => dispatch(changeDone(task.id))}
+              onChange={() => dispatch(changeDoneThunk(task.id, task.isDone))}
               className="h-5 w-5 accent-green-500"
             />
             <p

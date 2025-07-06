@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit"
-import { getToDosApi, deleteToDosApi,addToDosApi } from "../api/fetch" /* імпортуємо всі запити з файлу */
+import { getToDosApi, deleteToDosApi,addToDosApi, changeDoneToDosApi } from "../api/fetch" /* імпортуємо всі запити з файлу */
 
 const initialState = { 
   tasks: [],
@@ -22,6 +22,11 @@ export const addTasksThunk = createAsyncThunk("todo/addTasks", data =>
     /* addTasksThunk це функція яку ми викликажмо в dispath в компоненті для того щоб запустити action addTasks для редусера todo */
 
   addToDosApi(data) /* addToDosApi(data) функція з параметром data яка додає завдання */
+)
+
+
+export const changeDoneThunk = createAsyncThunk("todo/changeDone", (id, isDone) => 
+  changeDoneToDosApi(id, isDone) 
 )
 
 const todoSlice = createSlice({
@@ -63,6 +68,9 @@ const todoSlice = createSlice({
       .addCase(addTasksThunk.rejected, (state, action) => { /* дія додати завдання (помилка) */
              state.isLoading = false
         state.err = true
+      })
+      .addCase(changeDoneThunk.fulfilled, (state, action) => { 
+       state.tasks.push(action.payload)
       })
   },
 })
