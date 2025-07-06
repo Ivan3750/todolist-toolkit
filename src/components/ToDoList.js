@@ -30,12 +30,18 @@ const ToDoList = () => {
   switch (filter) {
     case "all":
       filteredTasks = tasks;
+                break;
+
     case "completed":
       filteredTasks = tasks.filter((task) => task.isDone);
+                break;
+
     case "incompleted":
       filteredTasks = tasks.filter((task) => !task.isDone);
+                break;
+
   }
-console.log(filteredTasks)
+console.log("ft",filter)
   useEffect(() => {
     dispatch(fetchTasksThunk());
   }, []);

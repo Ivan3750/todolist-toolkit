@@ -18,14 +18,17 @@ const filterSlice = createSlice({
   initialState,
   reducers: { /* синхроний редусер */
     changeTypeFilter(state, action) {
-      switch (action.payload){
+            switch (action.payload) {
         case "all":
-          state.filterStatus = statusFilter.all
+          state.filterStatus = statusFilter.all;
+          break;
         case "completed":
-          state.filterStatus = statusFilter.completed
+          state.filterStatus = statusFilter.completed;
+          break;
         case "incompleted":
-          state.filterStatus = statusFilter.incompleted
-      }
+          state.filterStatus = statusFilter.incompleted;
+          break;
+            }
     }
     
   },
